@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+
+@theme {
+  --primary-color: #ffffff;
+  --secondary-color: #000000;
+}
+
+* {
+  /* outline: 1px solid green; */
+}
+
+body {
+  @apply bg-(--secondary-color) text-(--primary-color);
+}
+
+@utility center {
+  @apply flex items-center justify-center;
+}
