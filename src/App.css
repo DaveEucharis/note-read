@@ -9,6 +9,10 @@
   /* outline: 1px solid green; */
 }
 
+::backdrop {
+  @apply bg-(--secondary-color);
+}
+
 body {
   @apply bg-(--secondary-color) text-(--primary-color);
 }

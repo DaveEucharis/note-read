@@ -10,8 +10,7 @@ type ClefLines = { visible: boolean; note: string[] }[]
 type NoteType = 'doremi' | 'abc'
 
 const App = () => {
-  // TODO setNoteType
-  const [noteType, _] = useState<NoteType>('doremi')
+  const [noteType, setNoteType] = useState<NoteType>('doremi')
   const [clef, setClef] = useState<Clefs>('treble')
   const [clefLines, setClefLines] = useState<ClefLines>([])
   const [currentNote, setCurrentNote] = useState<HTMLSpanElement | null>(null)
@@ -37,6 +36,22 @@ const App = () => {
     }
   }
 
+  const handleToggleDarkMode = () => {
+    const rootStyle = document.documentElement.style
+    if (rootStyle.getPropertyValue('--primary-color') === '#ffffff') {
+      rootStyle.setProperty('--primary-color', '#000000')
+      rootStyle.setProperty('--secondary-color', '#ffffff')
+    } else {
+      rootStyle.setProperty('--primary-color', '#ffffff')
+      rootStyle.setProperty('--secondary-color', '#000000')
+    }
+  }
+
+  const handleChangeNoteType = () => {
+    if (noteType === 'doremi') setNoteType('abc')
+    else if (noteType === 'abc') setNoteType('doremi')
+  }
+
   const renderNote = () => {
     if (!clefUL.current) return
 
@@ -53,7 +68,7 @@ const App = () => {
 
     const ledgerLine = document.createElement('div')
     const ledgerLine2 = document.createElement('div')
-    const classes = 'absolute w-9 h-0.5 bg-(--primary-color)'
+    const classes = 'absolute w-12 h-0.5 bg-(--primary-color)'
     ledgerLine.className = classes
     ledgerLine2.className = classes
 
@@ -68,7 +83,7 @@ const App = () => {
     }
 
     const newNote = document.createElement('span')
-    newNote.className = 'size-4.5 rounded-full bg-(--primary-color)'
+    newNote.className = 'size-6.5 rounded-full bg-(--primary-color)'
 
     chosenChild.appendChild(newNote)
 
@@ -188,7 +203,42 @@ const App = () => {
 
       {/* Buttons */}
 
-      <div className='flex gap-4 flex-wrap items-center justify-center mt-28 max-w-80 mx-auto p-2'>
+      <div className='flex justify-center items-center gap-8 mt-20'>
+        <button
+          onClick={handleChangeNoteType}
+          className='center size-14 rounded-full border-2 border-(--primary-color) font-bold bg-(--secondary-color) active:bg-(--primary-color) active:text-(--secondary-color)'
+        >
+          C/do
+        </button>
+
+        <button
+          onClick={handleToggleDarkMode}
+          className='center size-14 rounded-full border-2 border-(--primary-color)'
+        >
+          <svg
+            className='w-6 fill-(--primary-color)'
+            viewBox='0 0 16 16'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <g
+              id='SVGRepo_bgCarrier'
+              strokeWidth='0'
+            ></g>
+            <g
+              id='SVGRepo_tracerCarrier'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+            ></g>
+            <g id='SVGRepo_iconCarrier'>
+              {' '}
+              <path d='M0 8.00002C0 4.75562 1.93132 1.9623 4.70701 0.707031L5.65436 1.65438C5.2352 2.51383 5 3.47946 5 4.50002C5 8.08987 7.91015 11 11.5 11C12.5206 11 13.4862 10.7648 14.3456 10.3457L15.293 11.293C14.0377 14.0687 11.2444 16 8 16C3.58172 16 0 12.4183 0 8.00002Z'></path>{' '}
+              <path d='M11.5 7.00003L9 4.50003L11.5 2.00003L14 4.50003L11.5 7.00003Z'></path>{' '}
+            </g>
+          </svg>
+        </button>
+      </div>
+
+      <div className='flex gap-4 flex-wrap items-center justify-center max-w-80 mx-auto p-2 mt-4'>
         {buttonType.current.map((v, i) => (
           <button
             onClick={handleButtonClick}
