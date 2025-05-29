@@ -20,3 +20,28 @@ body {
 @utility center {
   @apply flex items-center justify-center;
 }
+
+@utility animation-wrong-answer {
+  animation: wiggle 500ms ease-out;
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: translateX(0);
+    background-color: var(--primary-color);
+  }
+  20% {
+    background-color: red;
+    transform: translateX(-0.75rem);
+  }
+  40% {
+    transform: translateX(0.75rem);
+  }
+  60% {
+    transform: translateX(-0.5rem);
+  }
+  80% {
+    transform: translateX(0.5rem);
+  }
+}

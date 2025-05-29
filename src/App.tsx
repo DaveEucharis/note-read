@@ -40,6 +40,12 @@ const App = () => {
 
     if (displayedNote?.includes(buttonNote)) {
       renderNote()
+    } else {
+      currentNote.classList.add('animation-wrong-answer')
+
+      setTimeout(() => {
+        currentNote.classList.remove('animation-wrong-answer')
+      }, 500)
     }
   }
 
