@@ -7,16 +7,23 @@ import { isProd } from './utils/isProd'
 
 type Clefs = 'bass' | 'treble'
 type ClefLines = { visible: boolean; note: string[] }[]
-type NoteType = 'doremi' | 'abc'
+type NoteType = string[]
 
 const App = () => {
-  const [noteType, setNoteType] = useState<NoteType>('doremi')
+  const [noteType, setNoteType] = useState<NoteType>([
+    'do',
+    're',
+    'mi',
+    'fa',
+    'sol',
+    'la',
+    'si',
+  ])
   const [clef, setClef] = useState<Clefs>('treble')
   const [clefLines, setClefLines] = useState<ClefLines>([])
   const [currentNote, setCurrentNote] = useState<HTMLSpanElement | null>(null)
 
   const clefUL = useRef<HTMLUListElement>(null)
-  const buttonType = useRef<string[]>([])
 
   const handleClefChange = () => {
     if (clef === 'bass') setClef('treble')
@@ -47,9 +54,14 @@ const App = () => {
     }
   }
 
+  const buttonTypes = {
+    doremi: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+    abc: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
+  }
+
   const handleChangeNoteType = () => {
-    if (noteType === 'doremi') setNoteType('abc')
-    else if (noteType === 'abc') setNoteType('doremi')
+    if (noteType[0] === 'do') setNoteType(buttonTypes.abc)
+    else setNoteType(buttonTypes.doremi)
   }
 
   const renderNote = () => {
@@ -93,13 +105,6 @@ const App = () => {
   useEffect(() => {
     setClefLines(createNotesArray(clef))
   }, [clef])
-
-  useEffect(() => {
-    if (noteType === 'doremi')
-      buttonType.current = ['do', 're', 'mi', 'fa', 'sol', 'la', 'si']
-    else if (noteType === 'abc')
-      buttonType.current = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
-  }, [noteType])
 
   const initialRender = useRef(true)
   useEffect(() => {
@@ -239,7 +244,7 @@ const App = () => {
       </div>
 
       <div className='flex gap-4 flex-wrap items-center justify-center max-w-80 mx-auto p-2 mt-4'>
-        {buttonType.current.map((v, i) => (
+        {noteType.map((v, i) => (
           <button
             onClick={handleButtonClick}
             key={i}
